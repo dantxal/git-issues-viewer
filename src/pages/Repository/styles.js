@@ -107,14 +107,13 @@ export const FilterList = styled.ul`
   align-items: center;
   justify-content: flex-start;
   list-style: none;
-  margin-top: 30px;
 
   li {
     & + li {
       margin-left: 5px;
     }
     button {
-      background: #f1f1f1;
+      background: #ddd;
       padding: 6px 8px;
       border-radius: 3px;
       border: none;
@@ -125,4 +124,30 @@ export const FilterList = styled.ul`
       }
     }
   }
+`;
+
+export const Pagination = styled.div`
+  button {
+    background: #ddd;
+    padding: 6px 8px;
+    border-radius: 3px;
+    border: none;
+    font-weight: 600;
+    &.active {
+      background: #7159c1;
+      color: #fff;
+      font-weight: 300;
+    }
+    & + button {
+      margin-left: 5px;
+    }
+  }
+`;
+
+export const FilterSection = styled.section`
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;

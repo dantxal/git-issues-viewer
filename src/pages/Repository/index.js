@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
-import { Loading, Owner, IssuesList, FilterList } from './styles';
+import {
+  Loading,
+  Owner,
+  IssuesList,
+  FilterList,
+  Pagination,
+  FilterSection,
+} from './styles';
 import Container from '../../components/Container';
 
 export default class Repository extends Component {
@@ -23,11 +30,13 @@ export default class Repository extends Component {
       loading: true,
       filters: ['all', 'open', 'closed'],
       selectedFilter: 'all',
+      currentPage: 1,
     };
   }
 
   async componentDidMount() {
     const { match } = this.props;
+    const { filterName, currentPage } = this.state;
 
     const repoName = decodeURIComponent(match.params.repository);
 
@@ -35,8 +44,9 @@ export default class Repository extends Component {
       api.get(`/repos/${repoName}`),
       api.get(`/repos/${repoName}/issues`, {
         params: {
-          state: 'all',
+          state: filterName,
           per_page: 5,
+          page: currentPage,
         },
       }),
     ]);
@@ -52,26 +62,48 @@ export default class Repository extends Component {
 
   handleSelectFilter = async filterName => {
     const { selectedFilter } = this.state;
-    const { match } = this.props;
-    const repoName = decodeURIComponent(match.params.repository);
 
     if (selectedFilter === filterName) return;
-    try {
-      const issues = await api.get(`/repos/${repoName}/issues`, {
-        params: {
-          state: filterName,
-          per_page: 5,
-        },
-      });
-      this.setState({ issues: [...issues.data] });
-    } catch (err) {
-      this.setState({ issues: [] });
-    }
     this.setState({ selectedFilter: filterName });
+
+    this.updateIssues();
+  };
+
+  handleChangePage = async value => {
+    let { currentPage } = this.state;
+    currentPage += value;
+
+    if (currentPage === 1 && value < 1) return;
+    this.setState({ currentPage: currentPage + value });
+
+    this.updateIssues();
+  };
+
+  updateIssues = async () => {
+    const { match } = this.props;
+    const { selectedFilter, currentPage } = this.state;
+
+    const repoName = decodeURIComponent(match.params.repository);
+
+    const issues = await api.get(`/repos/${repoName}/issues`, {
+      params: {
+        state: selectedFilter,
+        per_page: 5,
+        page: currentPage,
+      },
+    });
+    this.setState({ issues: [...issues.data] });
   };
 
   render() {
-    const { repository, issues, loading, filters, selectedFilter } = this.state;
+    const {
+      repository,
+      issues,
+      loading,
+      filters,
+      selectedFilter,
+      currentPage,
+    } = this.state;
 
     if (loading) {
       return <Loading>Carregando</Loading>;
@@ -86,19 +118,33 @@ export default class Repository extends Component {
           <p>{repository.description}</p>
         </Owner>
 
-        <FilterList>
-          {filters.map(filter => (
-            <li key={filter}>
-              <button
-                type="button"
-                className={selectedFilter === filter ? 'active' : ''}
-                onClick={() => this.handleSelectFilter(filter)}
-              >
-                {filter}
-              </button>
-            </li>
-          ))}
-        </FilterList>
+        <FilterSection>
+          <FilterList>
+            {filters.map(filter => (
+              <li key={filter}>
+                <button
+                  type="button"
+                  className={selectedFilter === filter ? 'active' : ''}
+                  onClick={() => this.handleSelectFilter(filter)}
+                >
+                  {filter}
+                </button>
+              </li>
+            ))}
+          </FilterList>
+          <Pagination>
+            <button
+              type="button"
+              disabled={currentPage <= 1}
+              onClick={() => this.handleChangePage(-1)}
+            >
+              back
+            </button>
+            <button type="button" onClick={() => this.handleChangePage(1)}>
+              next
+            </button>
+          </Pagination>
+        </FilterSection>
         <IssuesList>
           {issues.length ? (
             issues.map(issue => (
