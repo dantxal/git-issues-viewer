@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FaSpinner } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import {
@@ -36,7 +37,7 @@ export default class Repository extends Component {
 
   async componentDidMount() {
     const { match } = this.props;
-    const { filterName, currentPage } = this.state;
+    const { selectedFilter, currentPage } = this.state;
 
     const repoName = decodeURIComponent(match.params.repository);
 
@@ -44,15 +45,12 @@ export default class Repository extends Component {
       api.get(`/repos/${repoName}`),
       api.get(`/repos/${repoName}/issues`, {
         params: {
-          state: filterName,
+          state: selectedFilter,
           per_page: 5,
           page: currentPage,
         },
       }),
     ]);
-
-    console.log(repository);
-    console.log(issues);
     this.setState({
       repository: repository.data,
       issues: [...issues.data],
@@ -62,21 +60,23 @@ export default class Repository extends Component {
 
   handleSelectFilter = async filterName => {
     const { selectedFilter } = this.state;
-
     if (selectedFilter === filterName) return;
-    this.setState({ selectedFilter: filterName });
+    await this.setState({ selectedFilter: filterName });
 
     this.updateIssues();
   };
 
-  handleChangePage = async value => {
-    let { currentPage } = this.state;
-    currentPage += value;
+  handleChangePage = value => {
+    const { currentPage } = this.state;
 
-    if (currentPage === 1 && value < 1) return;
-    this.setState({ currentPage: currentPage + value });
+    if (currentPage < 2 && value < 1) return;
 
-    this.updateIssues();
+    this.setState(
+      () => ({
+        currentPage: currentPage + value,
+      }),
+      () => this.updateIssues()
+    );
   };
 
   updateIssues = async () => {
@@ -106,7 +106,11 @@ export default class Repository extends Component {
     } = this.state;
 
     if (loading) {
-      return <Loading>Carregando</Loading>;
+      return (
+        <Loading>
+          <FaSpinner color="#FFF" size={60} />
+        </Loading>
+      );
     }
 
     return (
@@ -140,6 +144,7 @@ export default class Repository extends Component {
             >
               back
             </button>
+            <p>{currentPage}</p>
             <button type="button" onClick={() => this.handleChangePage(1)}>
               next
             </button>

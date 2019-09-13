@@ -1,13 +1,22 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
+const rotate = keyframes`
+from {
+  transform: rotate(0deg);
+}
+to {
+  transform: rotate(360deg);
+}
+`;
 export const Loading = styled.div`
-  color: #fff;
-  font-size: 30px;
-  font-weight: bold;
   display: flex;
-  justify-content: center;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
   height: 100vh;
+  svg {
+    animation: ${rotate} 2s linear infinite;
+  }
 `;
 
 export const Owner = styled.header`
@@ -127,20 +136,39 @@ export const FilterList = styled.ul`
 `;
 
 export const Pagination = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
   button {
     background: #ddd;
     padding: 6px 8px;
     border-radius: 3px;
     border: none;
     font-weight: 600;
-    &.active {
+
+    &:hover {
+      background: #eee;
+    }
+    &:active {
       background: #7159c1;
       color: #fff;
-      font-weight: 300;
     }
     & + button {
       margin-left: 5px;
     }
+    &[disabled] {
+      color: #aaa;
+      cursor: default;
+      &:hover {
+        background: #ddd;
+      }
+    }
+  }
+
+  p {
+    font-weight: 300;
+    margin: 0 10px;
   }
 `;
 
