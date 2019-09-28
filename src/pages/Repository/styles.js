@@ -24,6 +24,7 @@ export const Owner = styled.header`
   flex-direction: column;
   align-items: center;
   a {
+    align-self: flex-start;
     color: #7159c1;
     font-size: 16px;
     text-decoration: none;

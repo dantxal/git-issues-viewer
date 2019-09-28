@@ -11,7 +11,7 @@ export default class Main extends Component {
     super();
     this.state = {
       newRepo: '',
-      repositories: [],
+      repositories: [{ name: 'facebook/react' }],
       loading: false,
       notFound: false,
     };
@@ -72,12 +72,12 @@ export default class Main extends Component {
       <Container>
         <h1>
           <FaGithubAlt />
-          Repositórios
+          Git Repository Issues Viewer
         </h1>
         <Form onSubmit={this.handleSubmit} notFound={notFound}>
           <input
             type="text"
-            placeholder="Adicionar repositório"
+            placeholder="Add repository 'author/repository`"
             value={newRepo}
             onChange={this.handleInputChange}
           />
@@ -96,7 +96,7 @@ export default class Main extends Component {
             <li key={repository.name}>
               <span>{repository.name}</span>
               <Link to={`/repository/${encodeURIComponent(repository.name)}`}>
-                Detalhes
+                Details
               </Link>
             </li>
           ))}
