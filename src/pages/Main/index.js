@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { FaGithubAlt, FaPlus, FaSpinner } from 'react-icons/fa';
+import { FaPlus, FaSpinner } from 'react-icons/fa';
 
 import api from '../../services/api';
 import Container from '../../components/Container';
-import { Form, SubmitButton, List } from './styles';
+import { Header, Form, SubmitButton, List, Logo } from './styles';
+import logo from '../../assets/logo.png';
 
 export default class Main extends Component {
   constructor() {
@@ -70,10 +71,13 @@ export default class Main extends Component {
 
     return (
       <Container>
-        <h1>
-          <FaGithubAlt />
-          Git Repository Issues Viewer
-        </h1>
+        <Header>
+          <div>
+            <Logo src={logo} alt="GRIV Logo" />
+            <h1>Git Repository Issues Viewer</h1>
+          </div>
+          <Link to="/about">About</Link>
+        </Header>
         <Form onSubmit={this.handleSubmit} notFound={notFound}>
           <input
             type="text"
@@ -96,7 +100,7 @@ export default class Main extends Component {
             <li key={repository.name}>
               <span>{repository.name}</span>
               <Link to={`/repository/${encodeURIComponent(repository.name)}`}>
-                Details
+                See issues
               </Link>
             </li>
           ))}

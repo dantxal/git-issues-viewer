@@ -25,9 +25,13 @@ export const Owner = styled.header`
   align-items: center;
   a {
     align-self: flex-start;
+    font-weight: bold;
     color: #7159c1;
     font-size: 16px;
     text-decoration: none;
+    svg {
+      margin-right: 5px;
+    }
   }
 
   img {

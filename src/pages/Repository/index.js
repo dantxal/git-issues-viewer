@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FaSpinner } from 'react-icons/fa';
+import { FaSpinner, FaArrowLeft } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import {
@@ -116,7 +116,10 @@ export default class Repository extends Component {
     return (
       <Container>
         <Owner>
-          <Link to="/">{`< Back`}</Link>
+          <Link to="/">
+            <FaArrowLeft size={13} color="#7159c1" />
+            Back
+          </Link>
           <img src={repository.owner.avatar_url} alt={repository.owner.login} />
           <h1>{repository.name}</h1>
           <p>{repository.description}</p>
