@@ -40,6 +40,9 @@ export const Form = styled.form`
     font-size: 16px;
     border: ${props => (props.notFound ? '3px solid red' : '1px solid #eee')};
   }
+  @media (max-width: 600px) {
+    max-width: 100% - 30px;
+  }
 `;
 
 const rotate = keyframes`

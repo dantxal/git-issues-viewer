@@ -81,7 +81,7 @@ export default class Main extends Component {
         <Form onSubmit={this.handleSubmit} notFound={notFound}>
           <input
             type="text"
-            placeholder="Add repository 'author/repository`"
+            placeholder="'author/repository`"
             value={newRepo}
             onChange={this.handleInputChange}
           />
