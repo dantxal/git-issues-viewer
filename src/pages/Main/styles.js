@@ -25,6 +25,7 @@ export const Header = styled.header`
 export const Logo = styled.img`
   margin-right: 10px;
   width: 40px;
+  height: 40px;
 `;
 
 export const Form = styled.form`

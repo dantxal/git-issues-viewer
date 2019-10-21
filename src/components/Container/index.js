@@ -19,6 +19,9 @@ const Container = styled.div`
       margin-right: 10px;
     }
   }
+  @media (max-width: 600px) {
+    margin: 20px auto;
+  }
 `;
 
 export default Container;

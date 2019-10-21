@@ -183,4 +183,10 @@ export const FilterSection = styled.section`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 600px) {
+    height: 60px;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 `;
