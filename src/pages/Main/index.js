@@ -74,7 +74,7 @@ export default class Main extends Component {
         <Header>
           <div>
             <Logo src={logo} alt="GRIV Logo" />
-            <h1>Git Repository Issues Viewer</h1>
+            <h1>Git-Issues Viewer</h1>
           </div>
           <Link to="/about">About</Link>
         </Header>
